@@ -1,0 +1,58 @@
+.c-content {
+  display              : grid;
+  gap                  : 20px;
+  grid-template-columns: repeat(2, 1fr);
+
+  &__title {
+    text-align: start;
+  }
+
+  &__rate {
+    text-align: end;
+  }
+
+  &__description {
+    text-align : start;
+    grid-column: span 2;
+  }
+
+  &__rateTag {
+    display: inline-block;
+  }
+
+  &__voteCount {
+    display: inline-block;
+    margin-inline-end: 15px;
+    font-size: small;
+    vertical-align: middle;
+  }
+
+  &__deliveryFee{
+    text-align: start;
+    label {
+      color: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      font-size: small;
+      vertical-align: middle;
+    }
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      margin:0 5px;
+    }
+  }
+  &__deliveryTime{
+    text-align: end;
+    label {
+      color: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      font-size: small;
+      vertical-align: middle;
+    }
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      margin:0 5px;
+    }
+  }
+}
