@@ -16,6 +16,7 @@ export type TVendorProps = {
 }
 
 export type TVendorsProps = {
-  list: Array<{}>
+  list: any
+  keys: Array<any>
 }
 

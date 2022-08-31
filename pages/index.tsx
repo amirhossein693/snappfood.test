@@ -1,4 +1,4 @@
-import styles from './home.module.scss';
+import styles from "./home.module.scss";
 import type { NextPage } from "next";
 import {
   getVendors,
@@ -12,42 +12,48 @@ import { wrapper } from "../store/store";
 import { getAllVendors } from "../lib/api";
 import { DEFAULT_QUERY } from "../consts";
 import Vendors from "../components/vendors";
+import simpleSerializer from "../utils/simpleSerializer";
 
 const query = new URLSearchParams(DEFAULT_QUERY).toString();
 
 const Home: NextPage = () => {
-  const { list, loading, fetched } = useSelector(selectVendorsState);
+  const { keys, list, loading } = useSelector(selectVendorsState);
   const dispatch = useDispatch();
-  
+
   const fetchData = async () => {
-    dispatch(getVendors(query));
+    dispatch(getVendors(DEFAULT_QUERY));
     const data = await getAllVendors(query);
     return dispatch(getVendorsSuccess(data));
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
   return (
-    <>
-      {!fetched && loading && "loading"}
-      {fetched && list && <main className={styles['p-home']}><Vendors list={list} /></main>}
-    </>
+    <main className={styles["p-home"]}>
+      {loading && "loading"}
+      {list && <Vendors keys={keys} list={list} />}
+    </main>
   );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async () => {
-      store.dispatch(getVendors(query));
-      const data = await getAllVendors(query);
-      store.dispatch(getVendorsSuccess(data));
-      return {
-        props: {
-          vendorsState: { list: data },
+  (store) => async () => {
+    store.dispatch(getVendors(DEFAULT_QUERY));
+    const data = await getAllVendors(query);
+    store.dispatch(getVendorsSuccess(data));
+    const { keys, list } = simpleSerializer(data?.finalResult);
+    return {
+      props: {
+        vendorsState: {
+          loading: false,
+          fetched: true,
+          keys,
+          list,
         },
-      };
-    }
+      },
+    };
+  }
 );
 
 export default Home;
